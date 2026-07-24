@@ -19,8 +19,3 @@ RetailRocket e-commerce clickstream dataset.
 - That the recommender was deployed in production
 - That observational clickstream patterns prove causality
 
-# Data
-
-Raw datasets are not committed to this repository.
-
-Download instructions, source links, and licensing notes will be added here before Phase 1.
