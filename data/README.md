@@ -1,10 +1,5 @@
 # Data
 
-Raw datasets are not committed to this repository.
-
-
-# Data
-
 ## Primary dataset
 RetailRocket E-commerce Dataset
 

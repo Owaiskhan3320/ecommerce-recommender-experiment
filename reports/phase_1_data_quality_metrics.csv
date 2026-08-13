@@ -1,0 +1,11 @@
+metric,value
+row_count,2756101
+unique_visitors,1407580
+unique_items,235061
+unique_transaction_ids,17672
+first_event_utc,2015-05-03 03:00:04.384000+00:00
+last_event_utc,2015-09-18 02:59:47.788000+00:00
+duplicate_rows,460
+invalid_event_timestamps,0
+transaction_rows_missing_transactionid,0
+non_transaction_rows_with_transactionid,0

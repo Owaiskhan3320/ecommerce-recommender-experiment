@@ -1,0 +1,4 @@
+session_count,sessions_with_view,sessions_with_cart,sessions_with_transaction,view_to_cart_rate_pct,view_to_transaction_rate_pct,inactivity_minutes
+1809161,1801929.0,46006.0,15449.0,2.553,0.857,15
+1761675,1755781.0,43924.0,14297.0,2.502,0.814,30
+1726714,1721538.0,42539.0,13446.0,2.471,0.781,60
