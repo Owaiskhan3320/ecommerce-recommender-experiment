@@ -1,0 +1,4 @@
+relative_mde_pct,baseline_conversion_rate_pct,target_conversion_rate_pct,alpha,power,sample_size_per_variant,total_sample_size,historical_view_sessions_per_day,estimated_days_to_sample_size,minimum_planned_days
+15.0,0.610611460085284,0.7022031790980765,0.05,0.8,122021,244042,12631.5,20,20
+20.0,0.610611460085284,0.7327337521023407,0.05,0.8,70222,140444,12631.5,12,14
+30.0,0.610611460085284,0.7937948981108692,0.05,0.8,32618,65236,12631.5,6,14
