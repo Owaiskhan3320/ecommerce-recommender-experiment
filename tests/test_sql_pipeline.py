@@ -84,6 +84,17 @@ class AnalyticsDatabaseTests(unittest.TestCase):
 
         self.assertEqual(invalid_funnel_rows, 0)
 
+    def test_visitor_session_numbers_are_positive(self) -> None:
+        invalid_session_numbers = self.connection.execute(
+            """
+            SELECT COUNT(*)
+            FROM fct_sessions
+            WHERE visitor_session_number < 1
+            """
+        ).fetchone()[0]
+
+        self.assertEqual(invalid_session_numbers, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

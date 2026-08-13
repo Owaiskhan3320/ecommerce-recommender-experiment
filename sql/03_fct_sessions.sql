@@ -3,6 +3,7 @@ WITH session_summary AS (
     SELECT
         session_id,
         visitorid,
+        MIN(session_number) AS visitor_session_number,
         MIN(event_time_utc) AS session_start_time,
         MAX(event_time_utc) AS session_end_time,
         COUNT(*) AS event_count,

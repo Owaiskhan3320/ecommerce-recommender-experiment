@@ -1,0 +1,6 @@
+duration_bucket,duration_order,total_sessions,sessions_with_view,sessions_with_full_funnel_transaction,transaction_rate_per_view_session_pct
+0 seconds,1,1380923,1376406.0,0.0,0.0
+1-60 seconds,2,98250,97870.0,68.0,0.069
+1-5 minutes,3,136018,135421.0,1799.0,1.328
+5-15 minutes,4,84735,84433.0,3449.0,4.085
+More than 15 minutes,5,61749,61651.0,5405.0,8.767
