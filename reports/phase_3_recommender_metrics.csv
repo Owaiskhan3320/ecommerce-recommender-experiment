@@ -1,0 +1,9 @@
+model,k,eligible_purchase_examples,examples_with_recommendations,candidate_coverage_pct,hits,recall_at_k_pct
+Co-visitation,1,2058,1866,90.671,94,4.568
+Co-visitation,5,2058,1866,90.671,227,11.03
+Co-visitation,10,2058,1866,90.671,295,14.334
+Co-visitation,20,2058,1866,90.671,340,16.521
+Popularity baseline,1,2058,2058,100.0,0,0.0
+Popularity baseline,5,2058,2058,100.0,22,1.069
+Popularity baseline,10,2058,2058,100.0,22,1.069
+Popularity baseline,20,2058,2058,100.0,29,1.409
