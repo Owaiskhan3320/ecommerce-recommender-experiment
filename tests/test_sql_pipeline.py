@@ -67,6 +67,23 @@ class AnalyticsDatabaseTests(unittest.TestCase):
 
         self.assertEqual(duplicate_session_ids, 0)
 
+    def test_strict_funnel_flags_are_consistent(self) -> None:
+        invalid_funnel_rows = self.connection.execute(
+            """
+            SELECT COUNT(*)
+            FROM fct_sessions
+            WHERE
+                has_cart_after_view
+                AND NOT has_view
+                OR has_transaction_after_view
+                AND NOT has_view
+                OR has_transaction_after_cart
+                AND NOT has_cart_after_view
+            """
+        ).fetchone()[0]
+
+        self.assertEqual(invalid_funnel_rows, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -37,6 +37,20 @@ numbered_sessions AS (
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS session_number
     FROM marked_sessions
+),
+
+sequenced_sessions AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY visitorid, session_number
+            ORDER BY
+                event_time_utc,
+                itemid,
+                event,
+                COALESCE(transactionid, -1)
+        ) AS session_event_number
+    FROM numbered_sessions
 )
 
 SELECT
@@ -47,10 +61,11 @@ SELECT
     ) AS session_id,
     visitorid,
     session_number,
+    session_event_number,
     timestamp_ms,
     event_time_utc,
     event_date,
     event,
     itemid,
     transactionid
-FROM numbered_sessions;
+FROM sequenced_sessions;
