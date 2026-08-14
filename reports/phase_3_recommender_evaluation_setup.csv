@@ -2,5 +2,8 @@ metric,value
 Training end time,2015-08-21 08:29:47.788+05:30
 Holdout duration (days),28
 Training sessions,1433867
-Holdout eligible purchase examples,2058
-Co-visitation candidate coverage (%),90.671
+Purchased-item retrieval examples,2058
+Next-item retrieval examples,45917
+Maximum items per training session,50
+Training sessions truncated at the cap,275
+Purchased-item co-visitation coverage@10 (%),80.564

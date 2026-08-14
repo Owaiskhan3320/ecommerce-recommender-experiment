@@ -1,0 +1,5 @@
+evaluation,model,k,bootstrap_unit,bootstrap_iterations,hit_rate_at_k_ci_low_pct,hit_rate_at_k_ci_high_pct
+Purchased-item retrieval,Co-visitation,10,visitorid,300,11.733,17.375
+Purchased-item retrieval,Popularity baseline,10,visitorid,300,0.63,1.574
+Next-item retrieval,Co-visitation,10,visitorid,300,27.443,28.463
+Next-item retrieval,Popularity baseline,10,visitorid,300,0.358,0.482

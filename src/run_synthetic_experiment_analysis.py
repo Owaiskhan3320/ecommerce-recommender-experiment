@@ -1,6 +1,4 @@
 from pathlib import Path
-from math import sqrt
-
 import matplotlib
 
 matplotlib.use("Agg")
@@ -9,14 +7,18 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from ab_analysis import compare_proportions, sample_ratio_mismatch_p_value
+from ab_analysis import (
+    compare_proportions,
+    sample_ratio_mismatch_p_value,
+    wilson_score_interval,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPORTS_DIRECTORY = PROJECT_ROOT / "reports"
 FIGURES_DIRECTORY = REPORTS_DIRECTORY / "figures"
 ALPHA = 0.05
-MINIMUM_RELATIVE_LIFT = 0.20
+MINIMUM_PRACTICAL_RELATIVE_LIFT = 0.20
 RENDER_GUARDRAIL_LIMIT = -0.002
 SYNTHETIC_VARIANTS = {
     "Control": {
@@ -91,8 +93,8 @@ def main() -> None:
     )
 
     primary_passes = (
-        primary_comparison.confidence_interval_low > 0
-        and primary_comparison.relative_lift >= MINIMUM_RELATIVE_LIFT
+        primary_comparison.confidence_interval_low
+        >= primary_comparison.control_rate * MINIMUM_PRACTICAL_RELATIVE_LIFT
     )
     render_guardrail_passes = (
         render_comparison.confidence_interval_low > RENDER_GUARDRAIL_LIMIT
@@ -114,17 +116,20 @@ def main() -> None:
             {
                 "check": "Primary absolute conversion difference (percentage points)",
                 "value": round(primary_comparison.absolute_difference * 100, 3),
-                "threshold": "> 0 with 95% CI fully positive",
+                "threshold": "95% CI lower bound > 0",
                 "result": "Pass"
                 if primary_comparison.confidence_interval_low > 0
                 else "Fail",
             },
             {
-                "check": "Primary relative lift (%)",
+                "check": "Primary practical-lift threshold (%)",
                 "value": round(primary_comparison.relative_lift * 100, 3),
-                "threshold": f">= {MINIMUM_RELATIVE_LIFT * 100:.0f}",
+                "threshold": (
+                    "95% CI lower bound >= "
+                    f"{MINIMUM_PRACTICAL_RELATIVE_LIFT * 100:.0f}% of control"
+                ),
                 "result": "Pass"
-                if primary_comparison.relative_lift >= MINIMUM_RELATIVE_LIFT
+                if primary_passes
                 else "Fail",
             },
             {
@@ -140,6 +145,16 @@ def main() -> None:
         index=False,
     )
 
+    control_interval = wilson_score_interval(
+        control["purchase_conversions"],
+        control["assigned_visitors"],
+        ALPHA,
+    )
+    treatment_interval = wilson_score_interval(
+        treatment["purchase_conversions"],
+        treatment["assigned_visitors"],
+        ALPHA,
+    )
     fig, ax = plt.subplots(figsize=(7, 4))
     plot_data = pd.DataFrame(
         {
@@ -149,27 +164,21 @@ def main() -> None:
                 primary_comparison.treatment_rate * 100,
             ],
             "error_pct": [
-                1.96
-                * sqrt(
-                    primary_comparison.control_rate
-                    * (1 - primary_comparison.control_rate)
-                    / control["assigned_visitors"]
-                )
-                * 100,
-                1.96
-                * sqrt(
-                    primary_comparison.treatment_rate
-                    * (1 - primary_comparison.treatment_rate)
-                    / treatment["assigned_visitors"]
-                )
-                * 100,
+                [
+                    (primary_comparison.control_rate - control_interval[0]) * 100,
+                    (primary_comparison.treatment_rate - treatment_interval[0]) * 100,
+                ],
+                [
+                    (control_interval[1] - primary_comparison.control_rate) * 100,
+                    (treatment_interval[1] - primary_comparison.treatment_rate) * 100,
+                ],
             ],
         }
     )
     ax.bar(
         plot_data["variant"],
         plot_data["conversion_rate_pct"],
-        yerr=plot_data["error_pct"],
+        yerr=plot_data["error_pct"].tolist(),
         capsize=5,
         color=["#7faac3", "#2f6f8f"],
     )
@@ -190,13 +199,13 @@ The fixed scenario assigns 75,000 eligible visitors to each variant. It mirrors 
 The 50/50 assignment check has p = {sample_ratio_p_value:.6f}. With the pre-specified threshold of 0.01, the synthetic assignment passes the sample-ratio check.
 
 ## Intent-to-treat primary analysis
-Control conversion is {primary_comparison.control_rate:.3%}; treatment conversion is {primary_comparison.treatment_rate:.3%}. The synthetic treatment-control difference is {primary_comparison.absolute_difference:.3%} ({primary_comparison.relative_lift:.1%} relative lift), with a two-sided 95% confidence interval of [{primary_comparison.confidence_interval_low:.3%}, {primary_comparison.confidence_interval_high:.3%}] and p = {primary_comparison.p_value:.6f}.
+Control conversion is {primary_comparison.control_rate:.3%}; treatment conversion is {primary_comparison.treatment_rate:.3%}. The synthetic treatment-control difference is {primary_comparison.absolute_difference:.3%} ({primary_comparison.relative_lift:.1%} relative lift), with a Newcombe 95% score interval of [{primary_comparison.confidence_interval_low:.3%}, {primary_comparison.confidence_interval_high:.3%}] and a pooled two-proportion z-test p-value of {primary_comparison.p_value:.6f}.
 
 ## Guardrail
 The treatment-control render-success difference is {render_comparison.absolute_difference:.3%}. Its 95% confidence interval lower bound is {render_comparison.confidence_interval_low:.3%}, compared with the pre-specified non-inferiority limit of {RENDER_GUARDRAIL_LIMIT:.1%}.
 
 ## Decision exercise
-{decision}. This statement describes only how the rule would be applied to the fabricated scenario. It is not a deployment recommendation and must not be represented as a live A/B-test outcome.
+{decision}. The 20% practical lift is a decision threshold in this synthetic exercise; it is distinct from the minimum detectable effect used for power planning. This statement describes only how the rule would be applied to the fabricated scenario. It is not a deployment recommendation and must not be represented as a live A/B-test outcome.
 """
     (REPORTS_DIRECTORY / "phase_5_synthetic_ab_summary.md").write_text(
         summary,

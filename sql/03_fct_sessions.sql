@@ -19,7 +19,6 @@ WITH session_summary AS (
 first_views AS (
     SELECT
         session_id,
-        MIN(session_event_number) AS first_view_position,
         MIN(event_time_utc) AS first_view_time
     FROM int_session_events
     WHERE event = 'view'
@@ -29,14 +28,13 @@ first_views AS (
 carts_after_view AS (
     SELECT
         events.session_id,
-        MIN(events.session_event_number) AS first_cart_after_view_position,
         MIN(events.event_time_utc) AS first_cart_after_view_time
     FROM int_session_events AS events
     INNER JOIN first_views
         ON events.session_id = first_views.session_id
     WHERE
         events.event = 'addtocart'
-        AND events.session_event_number > first_views.first_view_position
+        AND events.event_time_utc > first_views.first_view_time
     GROUP BY events.session_id
 ),
 
@@ -47,7 +45,7 @@ funnel_flags AS (
             CASE
                 WHEN
                     events.event = 'transaction'
-                    AND events.session_event_number > first_views.first_view_position
+                    AND events.event_time_utc > first_views.first_view_time
                 THEN 1
                 ELSE 0
             END
@@ -56,8 +54,8 @@ funnel_flags AS (
             CASE
                 WHEN
                     events.event = 'transaction'
-                    AND events.session_event_number
-                        > carts_after_view.first_cart_after_view_position
+                    AND events.event_time_utc
+                        > carts_after_view.first_cart_after_view_time
                 THEN 1
                 ELSE 0
             END

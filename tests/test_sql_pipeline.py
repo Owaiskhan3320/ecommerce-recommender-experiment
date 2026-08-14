@@ -8,6 +8,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATABASE_PATH = PROJECT_ROOT / "data" / "processed" / "analytics.duckdb"
 
 
+@unittest.skipUnless(
+    DATABASE_PATH.exists(),
+    "Run src/run_sql_pipeline.py after downloading the raw dataset.",
+)
 class AnalyticsDatabaseTests(unittest.TestCase):
     def setUp(self) -> None:
         self.connection = duckdb.connect(str(DATABASE_PATH), read_only=True)
@@ -28,7 +32,7 @@ class AnalyticsDatabaseTests(unittest.TestCase):
                 "int_session_events",
                 "fct_sessions",
                 "fct_user_activity",
-                "fct_item_funnel",
+                "fct_item_engagement_metrics",
             },
         )
 
@@ -73,12 +77,9 @@ class AnalyticsDatabaseTests(unittest.TestCase):
             SELECT COUNT(*)
             FROM fct_sessions
             WHERE
-                has_cart_after_view
-                AND NOT has_view
-                OR has_transaction_after_view
-                AND NOT has_view
-                OR has_transaction_after_cart
-                AND NOT has_cart_after_view
+                (has_cart_after_view AND NOT has_view)
+                OR (has_transaction_after_view AND NOT has_view)
+                OR (has_transaction_after_cart AND NOT has_cart_after_view)
             """
         ).fetchone()[0]
 

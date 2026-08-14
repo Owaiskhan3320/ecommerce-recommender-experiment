@@ -1,4 +1,6 @@
-CREATE OR REPLACE TABLE fct_item_funnel AS
+DROP TABLE IF EXISTS fct_item_funnel;
+
+CREATE OR REPLACE TABLE fct_item_engagement_metrics AS
 WITH item_metrics AS (
     SELECT
         itemid,

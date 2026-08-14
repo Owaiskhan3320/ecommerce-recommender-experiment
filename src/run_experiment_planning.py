@@ -126,18 +126,18 @@ Does a co-visitation recommendation module improve purchase conversion compared 
 ## Hypotheses and decision rule
 - **Null hypothesis:** treatment and control have equal primary conversion rates.
 - **Alternative:** the conversion rates differ. Use a two-sided 5% test and report the absolute conversion difference with a 95% confidence interval.
-- Ship only if the primary confidence interval is entirely above zero, guardrails remain within pre-set limits, and the result meets the chosen minimum detectable effect. Do not stop early for a favorable interim result.
+- Use the 20% relative minimum detectable effect only for sample-size planning. Before launch, separately set a minimum practical effect for the business decision and require the primary confidence interval to clear that threshold while guardrails remain within pre-set limits. Do not stop early for a favorable interim result.
 
 ## Sample-size scenarios
 The planning proxy is the historical strict view-to-transaction rate: {purchase_sessions:,} purchase sessions from {view_sessions:,} product-view sessions ({baseline_rate:.3%}) over {observed_days} calendar days. This is not the final experimental baseline because production eligibility and first-exposure measurement will differ.
 
-For a {recommended_plan['relative_mde_pct']:.0f}% relative lift scenario, the two-sided calculation requires {int(recommended_plan['sample_size_per_variant']):,} eligible assigned visitors per variant ({int(recommended_plan['total_sample_size']):,} total). Historical product-view volume implies roughly {int(recommended_plan['estimated_days_to_sample_size'])} days to reach that count; the plan enforces at least {int(recommended_plan['minimum_planned_days'])} days to cover weekly behavior. Recalculate from actual qualified-assignment traffic before launch.
+For an illustrative {recommended_plan['relative_mde_pct']:.0f}% relative-lift scenario, the two-sided calculation requires {int(recommended_plan['sample_size_per_variant']):,} eligible assigned visitors per variant ({int(recommended_plan['total_sample_size']):,} total). Historical product-view volume implies roughly {int(recommended_plan['estimated_days_to_sample_size'])} days to reach that count; the plan enforces at least {int(recommended_plan['minimum_planned_days'])} days to cover weekly behavior. This is a sizing illustration, not a real traffic forecast; recalculate from actual qualified-assignment traffic before launch.
 
 ## Required production logging
 Record `experiment_id`, `variant`, `visitor_id`, `session_id`, `exposure_time`, `anchor_itemid`, ranked candidate item IDs, render status, candidate clicks, add-to-cart events, and transactions. Log the assignment before rendering so the intent-to-treat population is recoverable.
 
 ## Interpretation boundary
-An offline Recall@10 advantage justifies testing the ranking. Only this randomized experiment can estimate the module's causal impact on the defined conversion metric.
+An offline HitRate@10 advantage justifies testing the ranking. Only this randomized experiment can estimate the module's causal impact on the defined conversion metric.
 """
     (REPORTS_DIRECTORY / "phase_4_experiment_design.md").write_text(
         design,

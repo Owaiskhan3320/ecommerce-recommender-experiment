@@ -1,0 +1,10 @@
+timestamp_ms,visitorid,event,itemid,transactionid
+0,100,view,10,0
+1800000,100,addtocart,10,0
+3600001,100,view,20,0
+10000,200,view,30,0
+10000,200,addtocart,30,0
+20000,200,transaction,30,2001
+30000,300,view,40,0
+31000,300,addtocart,40,0
+32000,300,transaction,40,3001

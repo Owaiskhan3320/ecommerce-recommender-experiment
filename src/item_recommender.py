@@ -48,10 +48,35 @@ def rank_popular_items(session_item_sequences: Iterable[Iterable[int]]) -> list[
     ]
 
 
+def candidate_count(
+    anchor_item: int,
+    candidates_by_item: dict[int, list[int]],
+    fallback_candidates: list[int] | None = None,
+    fallback_candidate_set: set[int] | None = None,
+) -> int:
+    """Return the number of candidates available after removing the anchor item."""
+    candidates = candidates_by_item.get(anchor_item)
+    if candidates is not None:
+        return len(candidates) - int(anchor_item in candidates)
+
+    fallback_candidates = fallback_candidates or []
+    fallback_candidate_set = fallback_candidate_set or set(fallback_candidates)
+    return len(fallback_candidates) - int(anchor_item in fallback_candidate_set)
+
+
 def recommend_items(
     anchor_item: int,
     candidates_by_item: dict[int, list[int]],
     top_k: int,
+    fallback_candidates: list[int] | None = None,
 ) -> list[int]:
-    """Return up to top_k co-visited items for one anchor item."""
-    return candidates_by_item.get(anchor_item, [])[:top_k]
+    """Return up to top_k candidates while excluding the current anchor item."""
+    candidates = candidates_by_item.get(anchor_item, fallback_candidates or [])
+    recommendations = []
+    for candidate_item in candidates:
+        if candidate_item != anchor_item:
+            recommendations.append(candidate_item)
+        if len(recommendations) == top_k:
+            break
+
+    return recommendations

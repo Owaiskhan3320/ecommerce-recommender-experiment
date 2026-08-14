@@ -35,6 +35,17 @@ class ABAnalysisTests(unittest.TestCase):
                 treatment_total=100,
             )
 
+    def test_zero_variance_extreme_difference_has_a_small_p_value(self) -> None:
+        comparison = compare_proportions(
+            control_successes=0,
+            control_total=100,
+            treatment_successes=100,
+            treatment_total=100,
+        )
+
+        self.assertLess(comparison.p_value, 0.0001)
+        self.assertGreater(comparison.confidence_interval_low, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

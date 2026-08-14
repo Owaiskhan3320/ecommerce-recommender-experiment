@@ -245,7 +245,7 @@ def main() -> None:
 The largest observed drop-off is between a product view and an add-to-cart event. Of {view_sessions:,} sessions with a product view, {cart_sessions:,} reached an add-to-cart after the view ({view_to_cart_rate:.3f}%). Among those cart sessions, {transaction_sessions:,} reached a transaction after the cart ({cart_to_transaction_rate:.3f}%). The strict view-to-transaction rate is {full_funnel_rate:.3f}%.
 
 ## Recommendation
-Prioritize discovery and product-page relevance before changing checkout. A simple item-to-item recommender is a reasonable next feature to evaluate offline because it aims to help a shopper move from viewing an item to considering another relevant item. Offline ranking results and a future controlled experiment would still be required before making any claim about causal conversion impact.
+The largest observed loss occurs before add-to-cart, but this log does not identify the cause. Product-page relevance is one testable hypothesis alongside price, availability, traffic quality, and shopper intent. A simple item-to-item recommender is a reasonable feature to evaluate offline; a controlled experiment would still be required before making any claim about causal conversion impact.
 
 ## Interpretation limits
 The event log is observational. Longer or later sessions may be associated with transactions, but these patterns do not show that session duration, repeat visits, or recommendations cause transactions.

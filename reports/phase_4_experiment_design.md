@@ -25,15 +25,15 @@ Does a co-visitation recommendation module improve purchase conversion compared 
 ## Hypotheses and decision rule
 - **Null hypothesis:** treatment and control have equal primary conversion rates.
 - **Alternative:** the conversion rates differ. Use a two-sided 5% test and report the absolute conversion difference with a 95% confidence interval.
-- Ship only if the primary confidence interval is entirely above zero, guardrails remain within pre-set limits, and the result meets the chosen minimum detectable effect. Do not stop early for a favorable interim result.
+- Use the 20% relative minimum detectable effect only for sample-size planning. Before launch, separately set a minimum practical effect for the business decision and require the primary confidence interval to clear that threshold while guardrails remain within pre-set limits. Do not stop early for a favorable interim result.
 
 ## Sample-size scenarios
 The planning proxy is the historical strict view-to-transaction rate: 10,721 purchase sessions from 1,755,781 product-view sessions (0.611%) over 139 calendar days. This is not the final experimental baseline because production eligibility and first-exposure measurement will differ.
 
-For a 20% relative lift scenario, the two-sided calculation requires 70,222 eligible assigned visitors per variant (140,444 total). Historical product-view volume implies roughly 12 days to reach that count; the plan enforces at least 14 days to cover weekly behavior. Recalculate from actual qualified-assignment traffic before launch.
+For an illustrative 20% relative-lift scenario, the two-sided calculation requires 70,222 eligible assigned visitors per variant (140,444 total). Historical product-view volume implies roughly 12 days to reach that count; the plan enforces at least 14 days to cover weekly behavior. This is a sizing illustration, not a real traffic forecast; recalculate from actual qualified-assignment traffic before launch.
 
 ## Required production logging
 Record `experiment_id`, `variant`, `visitor_id`, `session_id`, `exposure_time`, `anchor_itemid`, ranked candidate item IDs, render status, candidate clicks, add-to-cart events, and transactions. Log the assignment before rendering so the intent-to-treat population is recoverable.
 
 ## Interpretation boundary
-An offline Recall@10 advantage justifies testing the ranking. Only this randomized experiment can estimate the module's causal impact on the defined conversion metric.
+An offline HitRate@10 advantage justifies testing the ranking. Only this randomized experiment can estimate the module's causal impact on the defined conversion metric.

@@ -1,9 +1,17 @@
-model,k,eligible_purchase_examples,examples_with_recommendations,candidate_coverage_pct,hits,recall_at_k_pct
-Co-visitation,1,2058,1866,90.671,94,4.568
-Co-visitation,5,2058,1866,90.671,227,11.03
-Co-visitation,10,2058,1866,90.671,295,14.334
-Co-visitation,20,2058,1866,90.671,340,16.521
-Popularity baseline,1,2058,2058,100.0,0,0.0
-Popularity baseline,5,2058,2058,100.0,22,1.069
-Popularity baseline,10,2058,2058,100.0,22,1.069
-Popularity baseline,20,2058,2058,100.0,29,1.409
+evaluation,model,k,evaluation_examples,examples_with_at_least_k_candidates,candidate_coverage_at_k_pct,hits,hit_rate_at_k_pct
+Purchased-item retrieval,Co-visitation,1,2058,1866,90.671,94,4.568
+Purchased-item retrieval,Co-visitation,5,2058,1743,84.694,227,11.03
+Purchased-item retrieval,Co-visitation,10,2058,1658,80.564,295,14.334
+Purchased-item retrieval,Co-visitation,20,2058,1553,75.462,340,16.521
+Purchased-item retrieval,Popularity baseline,1,2058,2058,100.0,0,0.0
+Purchased-item retrieval,Popularity baseline,5,2058,2058,100.0,22,1.069
+Purchased-item retrieval,Popularity baseline,10,2058,2058,100.0,22,1.069
+Purchased-item retrieval,Popularity baseline,20,2058,2058,100.0,29,1.409
+Next-item retrieval,Co-visitation,1,45917,39523,86.075,4328,9.426
+Next-item retrieval,Co-visitation,5,45917,34227,74.541,10318,22.471
+Next-item retrieval,Co-visitation,10,45917,31052,67.626,12838,27.959
+Next-item retrieval,Co-visitation,20,45917,27679,60.281,14892,32.432
+Next-item retrieval,Popularity baseline,1,45917,45917,100.0,2,0.004
+Next-item retrieval,Popularity baseline,5,45917,45917,100.0,56,0.122
+Next-item retrieval,Popularity baseline,10,45917,45917,100.0,191,0.416
+Next-item retrieval,Popularity baseline,20,45917,45917,100.0,376,0.819

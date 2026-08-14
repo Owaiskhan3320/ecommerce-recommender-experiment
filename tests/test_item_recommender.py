@@ -8,6 +8,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from item_recommender import (
     build_co_visit_candidates,
+    candidate_count,
     rank_popular_items,
     recommend_items,
 )
@@ -34,6 +35,20 @@ class ItemRecommenderTests(unittest.TestCase):
         popular_items = rank_popular_items([[10, 10, 20], [10, 30], [20, 30]])
 
         self.assertEqual(popular_items, [10, 20, 30])
+
+    def test_fallback_recommendations_exclude_the_anchor_item(self) -> None:
+        recommendations = recommend_items(
+            anchor_item=10,
+            candidates_by_item={},
+            top_k=2,
+            fallback_candidates=[10, 20, 30],
+        )
+
+        self.assertEqual(recommendations, [20, 30])
+        self.assertEqual(
+            candidate_count(10, {}, fallback_candidates=[10, 20, 30]),
+            2,
+        )
 
 
 if __name__ == "__main__":
