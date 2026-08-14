@@ -1,0 +1,5 @@
+check,value,threshold,result
+Sample-ratio mismatch p-value,1.0,>= 0.01,Pass
+Primary absolute conversion difference (percentage points),0.149,> 0 with 95% CI fully positive,Pass
+Primary relative lift (%),23.333,>= 20,Pass
+Render-success difference (percentage points),-0.049,95% CI lower bound > -0.2,Pass

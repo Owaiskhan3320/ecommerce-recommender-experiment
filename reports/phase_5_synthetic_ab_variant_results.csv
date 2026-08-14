@@ -1,0 +1,3 @@
+variant,assigned_visitors,purchase_conversions,purchase_conversion_rate_pct,successful_renders,render_success_rate_pct
+Control,75000,480,0.64,74775,99.7
+Treatment,75000,592,0.789,74738,99.651
