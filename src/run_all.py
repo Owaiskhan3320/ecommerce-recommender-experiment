@@ -10,6 +10,7 @@ PIPELINE_SCRIPTS = [
     "run_recommender_evaluation.py",
     "run_experiment_planning.py",
     "run_synthetic_experiment_analysis.py",
+    "run_executive_summary.py",
 ]
 
 
