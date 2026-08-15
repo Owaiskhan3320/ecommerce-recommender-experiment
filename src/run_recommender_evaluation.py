@@ -382,7 +382,7 @@ def visitor_bootstrap_hit_rate_interval(
         visitor_total[1] += 1
 
     random_generator = Random(BOOTSTRAP_SEED)
-    visitor_values = list(visitor_totals.values())
+    visitor_values = [visitor_totals[visitorid] for visitorid in sorted(visitor_totals)]
     rates = []
     for _ in range(BOOTSTRAP_ITERATIONS):
         sampled_totals = [
