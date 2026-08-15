@@ -85,6 +85,14 @@ def compare_proportions(
         treatment_total,
         alpha,
     )
+    confidence_interval_low = absolute_difference - sqrt(
+        (treatment_rate - treatment_interval[0]) ** 2
+        + (control_interval[1] - control_rate) ** 2
+    )
+    confidence_interval_high = absolute_difference + sqrt(
+        (treatment_interval[1] - treatment_rate) ** 2
+        + (control_rate - control_interval[0]) ** 2
+    )
 
     return ProportionComparison(
         control_rate=control_rate,
@@ -92,8 +100,8 @@ def compare_proportions(
         absolute_difference=absolute_difference,
         relative_lift=relative_lift,
         standard_error=standard_error,
-        confidence_interval_low=treatment_interval[0] - control_interval[1],
-        confidence_interval_high=treatment_interval[1] - control_interval[0],
+        confidence_interval_low=confidence_interval_low,
+        confidence_interval_high=confidence_interval_high,
         p_value=p_value,
     )
 

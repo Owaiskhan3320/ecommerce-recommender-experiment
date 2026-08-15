@@ -26,6 +26,25 @@ class ABAnalysisTests(unittest.TestCase):
         self.assertGreater(comparison.absolute_difference, 0)
         self.assertGreater(comparison.confidence_interval_low, 0)
 
+    def test_newcombe_interval_matches_reference_calculation(self) -> None:
+        comparison = compare_proportions(
+            control_successes=50,
+            control_total=1_000,
+            treatment_successes=100,
+            treatment_total=1_000,
+        )
+
+        self.assertAlmostEqual(
+            comparison.confidence_interval_low,
+            0.027052228675,
+            places=9,
+        )
+        self.assertAlmostEqual(
+            comparison.confidence_interval_high,
+            0.073387866330,
+            places=9,
+        )
+
     def test_invalid_success_count_is_rejected(self) -> None:
         with self.assertRaises(ValueError):
             compare_proportions(
