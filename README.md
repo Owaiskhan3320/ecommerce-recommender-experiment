@@ -9,7 +9,7 @@ Where does the purchase journey lose shoppers, and is a simple item-to-item reco
 ## What I built
 
 - A DuckDB SQL pipeline that removes exact duplicates, sessionizes behavior with a 30-minute inactivity rule, and creates session, visitor, and item marts.
-- Product-funnel analysis using a strict event sequence: product view → add-to-cart → transaction.
+- Session-level funnel analysis using a strict time-ordered view → add-to-cart → transaction sequence.
 - A co-visitation item-to-item recommender evaluated on a chronological 28-day holdout against a global-popularity baseline.
 - A recommender A/B-test design with eligibility, persistent assignment, intent-to-treat analysis, guardrails, and sample-size scenarios.
 - A clearly labeled synthetic A/B-analysis exercise that demonstrates sample-ratio checks, confidence intervals, and a pre-specified decision rule.
@@ -84,16 +84,13 @@ python -m pip install -r requirements-notebook.txt
 
 ### 2. Add the raw data
 
-Download the RetailRocket files described in [data/README.md](data/README.md) and place them here:
+Download `events.csv` from the RetailRocket source described in [data/README.md](data/README.md) and place it here:
 
 ```text
 data/raw/retailrocket/events.csv
-data/raw/retailrocket/category_tree.csv
-data/raw/retailrocket/item_properties_part1.csv
-data/raw/retailrocket/item_properties_part2.csv
 ```
 
-Only `events.csv` is required to run the current analytical pipeline. The raw files and generated DuckDB database are ignored by Git.
+The source dataset also includes category and item-property files, but the current analytical pipeline uses only `events.csv`. Raw files and the generated DuckDB database are ignored by Git.
 
 ### 3. Run the full pipeline
 
@@ -112,7 +109,7 @@ python -m unittest discover -s tests -v
 ## Project flow
 
 1. **Data understanding:** inspect schema, event mix, duplicates, sessionization sensitivity, and activity distributions.
-2. **Product analytics:** quantify strict funnel loss and describe first-versus-later session behavior.
+2. **Session-level analytics:** quantify strict funnel loss and describe first-versus-later session behavior.
 3. **Recommender evaluation:** build a co-visitation baseline and compare it with popularity on a time-based holdout.
 4. **Experiment design:** specify the control, treatment, assignment, metrics, guardrails, and sample-size scenarios for a live test.
 5. **Synthetic A/B analysis:** demonstrate how the pre-specified analysis would be applied without presenting fabricated results as real.

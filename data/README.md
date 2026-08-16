@@ -6,10 +6,10 @@ RetailRocket E-commerce Dataset
 ## Source
 https://www.kaggle.com/datasets/retailrocket/ecommerce-dataset
 
-## Files used
-- `events.csv`: visitor interactions (`view`, `addtocart`, `transaction`)
-- `category_tree.csv`: category hierarchy
-- `item_properties_part1.csv` and `item_properties_part2.csv`: time-varying item properties
+## Dataset files
+- `events.csv`: visitor interactions (`view`, `addtocart`, `transaction`); required by the current analytical pipeline.
+- `category_tree.csv`: category hierarchy included in the source dataset; not required by the current pipeline.
+- `item_properties_part1.csv` and `item_properties_part2.csv`: time-varying item properties included in the source dataset; not required by the current pipeline.
 
 ## Storage policy
 Raw data is downloaded manually to `data/raw/retailrocket/` and is excluded from GitHub via `.gitignore`.
